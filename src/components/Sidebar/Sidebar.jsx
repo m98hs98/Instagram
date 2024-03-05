@@ -1,5 +1,6 @@
 import { Avatar, Box, Button, Flex, Link, Tooltip } from '@chakra-ui/react';
 import {Link as RouterLink} from 'react-router-dom';
+// import { InstagramLogo, InstagramMobileLogo } from '../../assets/constants';
 import { CreatePostLogo, InstagramLogo, InstagramMobileLogo, NotificationsLogo, SearchLogo } from '../../assets/constants';
 import { AiFillHome } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
@@ -8,7 +9,7 @@ import useLogout from '../../hooks/useLogout';
 
 const Sidebar = () => {
 
-  const sidebarItems = [
+const sidebarItems = [
     {
       icon: <AiFillHome size={25} />,
       text: "Home",
