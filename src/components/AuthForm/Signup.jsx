@@ -52,9 +52,9 @@ const Signup = () => {
         )}
 
         <Button w={'full'} colorScheme='blue' size={"sm"} fontSize={14} 
-        
             isLoading={loading}
-        onClick={() => signup(inputs)}>
+            onClick={() => signup(inputs)}
+        >
             Sign Up
         </Button>
     </>
