@@ -21,7 +21,16 @@ const GoogleAuth = ({ prefix }) => {
         return;
       }
 
-      if (newUser) {
+      const useRef = doc(firestore, "users", newUser.user.uid);
+      const userSnap = await(useRef);
+
+      if (userSnap.exists()) {
+        //Log in
+        const userDoc = userSnap.data();
+        localStorage.setItem("user-info", JSON.stringify(userDoc));
+        loginUser(userDoc);
+      } else {
+        //Signup
         const userDoc = {
           uid: newUser.user.uid,
           email: newUser.user.email,
@@ -33,17 +42,17 @@ const GoogleAuth = ({ prefix }) => {
           following: [],
           posts: [],
           createdAt: Date.now(),
-      }
+        };
 
-      await setDoc(doc(firestore, "users", newUser.user.uid), userDoc);
-      localStorage.setItem("user-info", JSON.stringify(userDoc));
-      loginUser(userDoc);
+        await setDoc(doc(firestore, "users", newUser.user.uid), userDoc);
+        localStorage.setItem("user-info", JSON.stringify(userDoc));
+        loginUser(userDoc);
       }
       
     } catch (error) {
       showToast("Error", error.message, "error");
     }
-  }
+  };
 
   return (
     <Flex alignItems={"center"} justifyContent={"center"} cursor={"pointer"}
