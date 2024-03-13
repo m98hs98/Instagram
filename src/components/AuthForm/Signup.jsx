@@ -14,7 +14,7 @@ const Signup = () => {
     });
 
     const [showPassword, setShowPassword] = useState(false);
-    const {loading, error, signup} = useSignUpWithEmailAndPassword();
+    const { loading, error, signup } = useSignUpWithEmailAndPassword();
 
 
 
@@ -22,20 +22,20 @@ const Signup = () => {
     <>
         <Input placeholder='Email' fontSize={14} type='email' size={"sm"}
             value={inputs.email}
-            onChange={(e) => setInputs({...inputs, email: e.target.value})}
+            onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
         />
         <Input placeholder='Username' fontSize={14} type='text' size={"sm"}
             value={inputs.username}
-            onChange={(e) => setInputs({...inputs, username: e.target.value})}
+            onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
         />
         <Input placeholder='Full Name' fontSize={14} type='text' size={"sm"}
             value={inputs.fullName}
-            onChange={(e) => setInputs({...inputs, fullName: e.target.value})}
+            onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
         />
         <InputGroup>
             <Input placeholder='Password' fontSize={14} type={showPassword ? "text" : "password"} size={"sm"}
                 value={inputs.password}
-                onChange={(e) => setInputs({...inputs, password: e.target.value})} 
+                onChange={(e) => setInputs({ ...inputs, password: e.target.value })} 
             />
             <InputRightElement h="full">
                 <Button variant={"ghost"} size={"sm"} onClick={() => setShowPassword(!showPassword)}>

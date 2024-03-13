@@ -14,15 +14,14 @@ const GoogleAuth = ({ prefix }) => {
 
   const handleGoogleAuth = async () => {
     try {
-
       const newUser = await signInWithGoogle();
       if (!newUser && error) {
         showToast("Error", error.message, "error");
         return;
       }
 
-      const useRef = doc(firestore, "users", newUser.user.uid);
-      const userSnap = await getDoc(useRef);
+      const userRef = doc(firestore, "users", newUser.user.uid);
+      const userSnap = await getDoc(userRef);
 
       if (userSnap.exists()) {
         //Log in
@@ -34,7 +33,7 @@ const GoogleAuth = ({ prefix }) => {
         const userDoc = {
           uid: newUser.user.uid,
           email: newUser.user.email,
-          username: newUser.user.email.split("0")[0],
+          username: newUser.user.email.split("@")[0],
           fullName: newUser.user.displayName,
           bio: "",
           profilePicURL: newUser.user.photoURL,
@@ -59,7 +58,7 @@ const GoogleAuth = ({ prefix }) => {
       onClick={handleGoogleAuth}
     >
         <Image src='/google.png' w={5} alt='Google logo' />
-        <Text mx={2} color={"blue.500"}>{prefix} with Google</Text>
+        <Text mx='2' color={"blue.500"}>{prefix} with Google</Text>
     </Flex>
   );
 };
