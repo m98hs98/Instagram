@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path='/' element={authUser ? <HomePage /> : <Navigate to="/auth" />} />
         <Route path='/auth' element={!authUser ? <AuthPage /> : <Navigate to="/" />} />
-        <Route path='/:username' element={<ProfilePage />} /> {/*With the ':', we change it to the Dynamic page */}
+        <Route path='/:username' element={<ProfilePage />} /> 
       </Routes>
     </PageLayout>
   )

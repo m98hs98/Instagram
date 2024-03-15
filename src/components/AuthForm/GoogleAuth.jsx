@@ -8,18 +8,21 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const GoogleAuth = ({ prefix }) => {
 
-  const [signInWithGoogle, , , error] = useSignInWithGoogle(auth);
+  const [signInWithGoogle, error] = useSignInWithGoogle(auth);
   const showToast = useShowToast();
-  const loginUser = useAuthStore((state) => state.login);
+  const loginUser = useAuthStore(state => state.login);
 
   const handleGoogleAuth = async () => {
     try {
       const newUser = await signInWithGoogle();
-      if (!newUser && error) {
+      if (!newUser) {
+        throw new Error('Authentication returned null or undefined.');
+      } if (error) {
         showToast("Error", error.message, "error");
         return;
       }
 
+      // Check that user is exist or not
       const userRef = doc(firestore, "users", newUser.user.uid);
       const userSnap = await getDoc(userRef);
 
@@ -42,7 +45,6 @@ const GoogleAuth = ({ prefix }) => {
           posts: [],
           createdAt: Date.now(),
         };
-
         await setDoc(doc(firestore, "users", newUser.user.uid), userDoc);
         localStorage.setItem("user-info", JSON.stringify(userDoc));
         loginUser(userDoc);
@@ -58,7 +60,9 @@ const GoogleAuth = ({ prefix }) => {
       onClick={handleGoogleAuth}
     >
         <Image src='/google.png' w={5} alt='Google logo' />
-        <Text mx='2' color={"blue.500"}>{prefix} with Google</Text>
+        <Text mx='2' color={"blue.500"}>
+          {prefix} with Google
+        </Text>
     </Flex>
   );
 };

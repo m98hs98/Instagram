@@ -18,10 +18,14 @@ const useGetUserProfileByUsername = (username) => {
             setIsLoading(true);
 
             try {
+                console.log('Fetching profile for username:', username);
                 const q = query(collection(firestore, "users"), where("username", "==", username));
                 const querySnapshot = await getDocs(q);
 
-                if (querySnapshot.empty) return setUserProfile(null);
+                if (querySnapshot.empty) {
+                    console.log('No profile found for username:', username);
+                    return setUserProfile(null);
+                }
 
                 let userDoc;
                 querySnapshot.forEach((doc) => {
@@ -37,6 +41,7 @@ const useGetUserProfileByUsername = (username) => {
                 setIsLoading(false);
             }
         };
+        
         getUserProfile();
 
     }, [setUserProfile, username, showToast]);

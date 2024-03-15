@@ -1,10 +1,14 @@
 import { Avatar, AvatarGroup, Button, Flex, Text, VStack } from "@chakra-ui/react";
 import useUserProfileStore from "../../Store/userProfileStore";
+import useAuthStore from "../../Store/authStore";
 
 
 const ProfileHeader = () => {
 
-    const {userProfile} = useUserProfileStore();
+    const { userProfile } = useUserProfileStore();
+    const authUser = useAuthStore(state => state.user);
+    const visitingOwnProfileAndAuth = authUser && authUser.username === userProfile.username;
+    const visitingAnotherProfileAndAuth = authUser && authUser.username !== userProfile.username;
 
 
   return (
@@ -19,11 +23,21 @@ const ProfileHeader = () => {
                 <Text fontSize={{ base: "sm", md: "lg" }}>
                     {userProfile.username}
                 </Text>
-                <Flex gap={4} alignItems={"center"} justifyContent={"center"}>
-                    <Button bg={"white"} color={"black"} _hover={{ bg: "whiteAlpha.800" }} size={{ base: "xs", md: "sm" }}>
-                        Edite Profile
-                    </Button>
-                </Flex>
+                {visitingOwnProfileAndAuth && (
+                    <Flex gap={4} alignItems={"center"} justifyContent={"center"}>
+                        <Button bg={"white"} color={"black"} _hover={{ bg: "whiteAlpha.800" }} size={{ base: "xs", md: "sm" }}>
+                            Edite Profile
+                        </Button>
+                    </Flex>
+                )}  
+                {visitingAnotherProfileAndAuth && (
+                    <Flex gap={4} alignItems={"center"} justifyContent={"center"}>
+                        <Button bg={"white"} color={"black"} _hover={{ bg: "whiteAlpha.800" }} size={{ base: "xs", md: "sm" }}>
+                            Follow
+                        </Button>
+                    </Flex>
+                )} 
+
             </Flex>
 
 

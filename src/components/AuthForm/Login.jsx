@@ -17,11 +17,11 @@ const Login = () => {
     <>
       <Input placeholder='Email' fontSize={14} type='email' size={"sm"}
         value={inputs.email}
-        onChange={(e) => setInputs({...inputs, email: e.target.value})}
+        onChange={(e) => setInputs({ ...inputs, email: e.target.value })}
       />
       <Input placeholder='Password' fontSize={14} type='password' size={"sm"}
         value={inputs.password}
-        onChange={(e) => setInputs({...inputs, password: e.target.value})} 
+        onChange={(e) => setInputs({ ...inputs, password: e.target.value })} 
       />
 
       {error && (
@@ -32,7 +32,7 @@ const Login = () => {
       )}
 
       <Button w={'full'} colorScheme='blue' size={"sm"} fontSize={14} isLoading={loading} onClick={() => login(inputs)}>
-        Log In
+        Log in
       </Button>
     </>
   );
