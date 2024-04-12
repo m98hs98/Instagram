@@ -8,7 +8,6 @@ const useSignUpWithEmailAndPassword = () => {
   
     const [
         createUserWithEmailAndPassword,
-        ,
         loading,
         error,
     ] = useCreateUserWithEmailAndPassword(auth);
@@ -17,6 +16,7 @@ const useSignUpWithEmailAndPassword = () => {
    
 
     const signup = async (inputs) => {
+
         if (!inputs.email || !inputs.password || !inputs.username || !inputs.fullName) {
             showToast("Error", "Please fill all the fields", "error");
             return;
@@ -32,12 +32,17 @@ const useSignUpWithEmailAndPassword = () => {
 
 
         try {
-            const newUser = await createUserWithEmailAndPassword(inputs.email, inputs.password)
+            console.log("Attempting to create user with email:", inputs.email);
+            const newUser = await createUserWithEmailAndPassword(inputs.email, inputs.password);
+            
             if(!newUser && error) {
                 showToast("Error", error.message, "error");
                 return;
             }
+
             if (newUser) {
+                console.log("User authenticated:", !!auth.currentUser);
+
                 const userDoc = {
                     uid: newUser.user.uid,
                     email: inputs.email,
@@ -49,7 +54,10 @@ const useSignUpWithEmailAndPassword = () => {
                     following: [],
                     posts: [],
                     createdAt: Date.now(),
-                }
+                };
+
+
+                console.log("Attempting to write to Firestore with user UID:", newUser.user.uid);
 
                 await setDoc(doc(firestore, "users", newUser.user.uid), userDoc);
                 localStorage.setItem("user-info", JSON.stringify(userDoc));
@@ -60,7 +68,7 @@ const useSignUpWithEmailAndPassword = () => {
         }
     };
 
-    return { loading, error, signup }
+    return { loading, error, signup };
 
 };
 
