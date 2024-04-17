@@ -34,7 +34,7 @@ const Sidebar = () => {
             w={10}
             cursor="pointer"
           >
-              <InstagramMobileLogo />
+            <InstagramMobileLogo />
           </Link>
           <Flex direction={"column"} gap={5} cursor={"pointer"}>
            <SidebarItems />
@@ -44,7 +44,7 @@ const Sidebar = () => {
           {/*     LOGOUT     */}
           <Tooltip
               hasArrow
-              label={"Log Out"}
+              label={"Logout"}
               placement='right'
               ml={1}
               openDelay={500}
