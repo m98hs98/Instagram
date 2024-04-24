@@ -6,7 +6,7 @@ import Comment from "../Comment/Comment";
 import PostFooter from "../FeedPosts/PostFooter";
 
 
-const ProfilePost = ({img}) => {
+const ProfilePost = ({ img }) => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -48,7 +48,7 @@ const ProfilePost = ({img}) => {
             <Flex>
               <FaComment size={20}/>
               <Text fontWeight={"bold"} ml={2}>
-
+                10
               </Text>
             </Flex>
           </Flex>
@@ -81,7 +81,7 @@ const ProfilePost = ({img}) => {
                   <Flex alignItems={"center"} gap={4}>
                     <Avatar src="/profilepic.png" size={"sm"} name="as a programmer" />
                     <Text fontWeight={"bold"} fontSize={12}>
-                      asaprogrammer
+                      asaprogrammer_
                     </Text>
                   </Flex>
 
