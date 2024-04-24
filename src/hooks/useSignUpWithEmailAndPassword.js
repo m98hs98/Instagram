@@ -59,8 +59,8 @@ const useSignUpWithEmailAndPassword = () => {
 
                 console.log("Attempting to write to Firestore with user UID:", newUser.user.uid);
 
-                await setDoc(doc(firestore, "users", newUser.user.uid), userDoc);
-                localStorage.setItem("user-info", JSON.stringify(userDoc));
+                await setDoc(doc(firestore, "users", newUser.user.uid), userDoc); // User has been create in the database 
+                localStorage.setItem("user-info", JSON.stringify(userDoc)); // Set the previous line in our local storage
                 loginUser(userDoc);
             }
         } catch (error) {
