@@ -21,8 +21,10 @@ const useLogin = () => {
             const userCred = await signInWithEmailAndPassword(inputs.email, inputs.password);
 
             if (userCred) {
+                // Get a Document with firebase
                 const docRef = doc(firestore, "users", userCred.user.uid);
                 const docSnap = await getDoc(docRef);
+                // Set it into localStorage
                 localStorage.setItem("user-info", JSON.stringify(docSnap.data()));
                 loginUser(docSnap.data());
             }
@@ -31,7 +33,7 @@ const useLogin = () => {
             showToast("Error", error.message, "error");
         }
         
-    }
+    };
 
     return { loading, error, login };
 };

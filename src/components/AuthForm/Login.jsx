@@ -5,12 +5,12 @@ import useLogin from "../../hooks/useLogin";
 
 const Login = () => {
 
-    const [inputs, setInputs] = useState({
-        email: '',
-        password: '',
-    });
+  const [inputs, setInputs] = useState({
+    email: '',
+    password: '',
+  });
 
-    const { loading, error, login } = useLogin();
+  const { loading, error, login } = useLogin();
 
 
   return (

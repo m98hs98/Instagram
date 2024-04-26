@@ -22,6 +22,7 @@ const useSignUpWithEmailAndPassword = () => {
             return;
         }
 
+        // Avoid repetitive username
         const usersRef = collection(firestore, "users");
         const q = query(usersRef, where("username", "==", inputs.username));
         const querySnapshot = await getDocs(q);

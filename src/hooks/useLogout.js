@@ -17,7 +17,7 @@ const useLogout = () => {
         } catch (error) {
             showToast("Error", error.message, 'error');
         }
-    }
+    };
 
 
     return { handleLogout, isLoadingOut, error };
