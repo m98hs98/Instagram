@@ -32,6 +32,7 @@ const EditProfile = ({ isOpen, onClose }) => {
 	const { handleImageChange, selectedFile, setSelectedFile } = usePreviewImg();
 	const { isUpdating, editProfile } = useEditProfile();
 	const showToast = useShowToast();
+	// console.log(selectedFile);
 
 	const handleEditProfile = async () => {
 		try {
