@@ -6,6 +6,13 @@ import Comment from "../Comment/Comment";
 import PostFooter from "../FeedPosts/PostFooter";
 import useUserProfileStore from "../../Store/userProfileStore";
 import useAuthStore from "../../Store/authStore";
+import useShowToast from "../../hooks/useShowToast";
+import { useState } from "react";
+import { deleteObject, ref } from "firebase/storage";
+import {  firestore, storage } from "../../firebase/firebase";
+import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import usePostStore from "../../Store/postStore";
+import Caption from "../Comment/Caption";
 
 
 const ProfilePost = ({ post }) => {
@@ -13,6 +20,38 @@ const ProfilePost = ({ post }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const userProfile = useUserProfileStore((state) => state.userProfile);
   const authUser = useAuthStore((state) => state.user);
+  const showToast = useShowToast();
+  const [isDeleting, setIsDeleting] = useState(false);
+	const deletePost = usePostStore((state) => state.deletePost);
+	const decrementPostsCount = useUserProfileStore((state) => state.deletePost);
+
+  const handleDeletePost = async () => { 
+
+    if (!window.confirm("Are you sure you want to delete this post?")) return;
+		if (isDeleting) return;
+
+    try {
+      
+      const imageRef = ref(storage, `posts/${post.id}`);
+			await deleteObject(imageRef);
+			const userRef = doc(firestore, "users", authUser.uid);
+			await deleteDoc(doc(firestore, "posts", post.id));
+
+			await updateDoc(userRef, {
+				posts: arrayRemove(post.id),
+			});
+
+			deletePost(post.id);
+			decrementPostsCount(post.id);
+			showToast("Success", "Post deleted successfully", "success");
+      
+    } catch (error) {
+      showToast("Error", error.message, "error");
+    } finally {
+			setIsDeleting(false);
+		}
+
+  };
 
 
   return (
@@ -90,7 +129,15 @@ const ProfilePost = ({ post }) => {
                   </Flex>
 
                   {authUser?.uid === userProfile.uid && (
-                    <Button size={"sm"} bg={"transparent"} _hover={{ bg: "whiteAlpha.300", color: "red.600" }} borderRadius={4} p={1}>
+                    <Button 
+                      size={"sm"} 
+                      bg={"transparent"} 
+                      _hover={{ bg: "whiteAlpha.300", color: "red.600" }} 
+                      borderRadius={4} 
+                      p={1}
+                      onClick={handleDeletePost}
+                      isLoading={isDeleting}
+                    >
                       <MdDelete size={20} cursor="pointer" />
                     </Button>
                   )}
@@ -99,14 +146,20 @@ const ProfilePost = ({ post }) => {
                 <Divider my={4} bg={"gray.500"} />
 
                 <VStack w='full' alignItems={"start"} maxH={"350px"} overflowY={"auto"}>
-                  <Comment createdAt= "1d ago" username= "asaprogrammer_" profilePic= "/profilepic.png" text= {"Dummy images from unsplash"} />
-                  <Comment createdAt= {"12d ago"} username= {"abrahmov"} profilePic= {"http://bit.1y/dan-abramov"} text= {"Nice pic"} />
-                  <Comment createdAt= {"3h ago"} username= {"kentdodds"} profilePic= {"http://bit.1y/kent-c-dodds"} text= {"Good clone dude!"} />
+
+                  {/* Caption */}
+                  {post.caption && <Caption post={post} />}
+
+                  
+                  {/* Comments */}
+                  {post.comments.map((comment) => (
+                    <Comment key={comment.id} comment={comment} />
+                  ))}
                 </VStack>
 
                 <Divider my={4} bg={"gray.800"} />
 
-                <PostFooter isProfilePage={true} />
+                <PostFooter isProfilePage={true} post={post} />
               </Flex>
             </Flex>
           </ModalBody>
